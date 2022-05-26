@@ -1,0 +1,74 @@
+GENERAL COMMANDS:
+
+To donwload a package: sudo apt-get install <package_name>
+Name of current user: whoami
+To update info about files on local machine: sudo apt-get update
+What current directory consistf of: ls
+More info: ls -la
+To see secret files: ls -a
+To make a directory: mkdir <directory_name>
+To show current directory: pwd
+To change directory (cd): cd <directory_name>
+To copy one file to another: cp <copy_file> <destination_file>
+To copy of content from one root to another: cp -r <copy_root> <destination_root>
+To rename (change a root): mv <root_name> <new_root_name>
+To delete a root (file): rm <root_name>
+To delete all files: rm <root_name>/*
+To delete a folder and what it contains: rm -rf <folder_name>
+To perform a vim: vi <root_name> (i - redact mode, escape - to cancel from redact mode,
+				  to save all changes - :w, to quit - :q)
+To create an environment variable: export <var_name>=<var_value>
+To print a variable: echo $<var_name>
+
+
+PYTHON:
+
+To downdload pip: sudo apt install python3-pip
+To install virtualenv: sudo pip3 install virtualenv
+To create a virtual environment: virtualenv <virtual_name>
+To activate the environment: source <virtual_name>/bin/activate
+To deactivate it: deactivate
+
+
+APACHE:
+
+to install apache: sudo apt-get install apache2 -y
+to restart apache: sudo service apache2 restart
+
+
+WSL DISTRIBUTIVE:
+
+To watch the id of distributive: winget uninstall
+To delete a distributive: winget uninstall --id DISTRO-ID-NAME
+To show all available distros: wsl --list
+To unregister a distributive: wsl --unregister DISTRO-NAME
+
+
+NGINX:
+To install NGINX: apt-get install nginx -y
+To confirm that NGINX is running: ps auwx | grep nginx
+
+
+GIT:
+
+1. sudo apt update
+2. sudo apt install git
+3. git --version
+4. git config --global user.name "<user_name>"
+5. git config --global user.email <user_email>
+6. git config --list
+
+Generate ssh key:
+1. ssh-keygen
+2. copying the public key manually: cat ~/.ssh/id_rsa.pub
+Add your key to the startup of your ssh client:
+1. nano ~/.ssh/config
+2. add following lines at the end of this file:
+Host github.com
+HostName github.com
+IdentityFile ~/.ssh/id_rsa
+
+
+GENERAL ISSUES:
+
+sudo <command_name> - to perform a command with supervisor privillage

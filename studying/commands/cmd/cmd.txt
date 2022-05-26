@@ -1,0 +1,4 @@
+GENERAL:
+
+Windows archiver: tar.exe -a -c -f my-deployment-package.zip lambda_function.py
+Dearchiver: tar.exe -x -f my-deployment-package.zip

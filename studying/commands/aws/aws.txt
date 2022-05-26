@@ -1,0 +1,143 @@
+AWS:
+
+Creating a lambda function: aws lambda create-function --function-name LambdaFunction \
+--zip-file fileb://my-deployment-package.zip \
+--handler lambda_function.handler - "lambda_function - name of archivered file" \ 
+--runtime python3.9 \
+--role arn:aws:iam::155075962425:role/LambdaFunctionRole \
+--profile user1
+Invoke a lambda: aws lambda invoke --function-name LambdaFunction out \
+--log-type Tail \
+--profile user1
+List of lambdas: aws lambda list-functions --max-items 10 \
+--profile user1
+To see everything about a lambda: aws lambda get-function --function-name LambdaFunction \
+--profile user1
+Deleting a lambda function: aws lambda delete-function --function-name LambdaFunction \
+--profile user1
+
+Creating a s3: aws s3 mb s3://name_of_bucket \
+--profile user1
+To delete objects from a bucket: aws s3 rm s3://bucket-name/example/filename.txt \
+--recursive \ - recursive option
+--profile user1
+Deleting a s3: aws s3 rb s3://name_of_bucket \
+--force \ - emptying the bucket and deleting it 
+--profile user1
+
+To rename a group: aws iam update-group --group-name Test \
+--new-group-name Test-1
+To attach a policy for a group: aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess \
+--group-name NameOfGroup
+
+Create user: aws iam create-user --user-name user1
+Find some policy in list of policies (for arn): aws iam list-policies | findstr Policy
+To attach policy to user: aws iam attach-user-policy --user-name prateek \
+--policy-arn "arn:aws:iam::aws:policy/Policy"
+List of users: aws iam list-users
+List of atacched policies for user: aws iam list-attached-user-policies --user-name user1
+To delete a policy: aws iam detach-user-policy --user-name Bob \
+--policy-arn arn:aws:iam::123456789012:policy/TesterPolicy
+To delete a user: aws iam delete-user --user-name user
+
+Create a role: aws iam create-role --role-name NameOfRole \
+--assume-role-policy-document file://trust-policy.json
+Text of trust-policy.json:
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+To attach a policy to role: aws iam attach-role-policy --role-name NameOfRole \
+--policy-arn arn:aws:iam::123456789012:role/Policy
+List of attached policies to role: aws iam list-attached-role-policies --role-name NameOfRole
+To delete an attached policy to role: aws iam detach-role-policy --role-name NameOfRole \
+--policy-arn arn:aws:iam::123456789012:policy/Policy
+To delete a role: aws iam delete-role --role-name NameOfRole
+
+The applies a notification configuration: aws s3api put-bucket-notification-configuration --bucket BucketName \
+--notification-configuration file://notification.json \
+--profile user1
+Text of notification.json:
+{
+"TopicConfigurations": [
+    {
+      "Id": "my-lambda-function-s3-event-configuration",
+      "TopicArn": "arn-of-aws-lambda-function",
+      "Events": [ "s3:ObjectCreated:*" ],
+      "Filter": {
+        "Key": {
+          "FilterRules": [
+            {
+              "Name": "suffix",
+              "Value": ".zip"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+In common: 
+ {
+    "TopicConfigurations": [
+        {
+            "TopicArn": "arn:aws:sns:us-west-2:123456789012:s3-notification-topic",
+            "Events": [
+                "s3:ObjectCreated:*"
+            ]
+        }
+    ]
+}
+To delete a notification: aws s3api put-bucket-notification-configuration --bucket=mybucket \
+--notification-configuration "{}" \
+--profile user1
+
+To create a dynamodb table: aws dynamodb create-table --cli-input-json file://table.json \
+--profile user1
+Text of table.json:
+{
+  "TableName": "Oscars",
+  "KeySchema": [
+    {
+      "AttributeName": "Id",
+      "KeyType": "HASH"
+    }
+  ],
+  "AttributeDefinitions": [tar
+    {
+      "AttributeName": "Id",
+      "AttributeType": "N"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}
+To describe a dynamodb table: aws dynamodb describe-table \
+--table-name NameOfTable \
+--profile user1
+To delete a dynamodb table: aws dynamodb delete-table --table-name NameOfTable \
+--profile user1
+
+To create a sns-topic: aws sns create-topic --name my-topic \
+--profile user1
+List of all topics: aws sns list-topics --profile user1
+Deleting a topic: aws sns delete-topic --topic-arn arn \
+--profile user1
+
+To create a subscription: aws sns subscribe --topic-arn arn \
+--protocol email \
+--notification-endpoint my-email@example.com \
+--profile user1
+List of all subscriptions: aws sns list-subscriptions --profile user1
+Deleting a subscription: aws sns unsubscribe --subscription-arn arn \
+--profile user1
